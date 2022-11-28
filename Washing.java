@@ -2,16 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.test1;
+package com.mycompany.project;
 
+/**
+ *
+ * @author fakru
+ */
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -19,12 +25,43 @@ import javafx.util.Duration;
 
 /**
  *
- * @author fakru
+ * @author Nabil.s
  */
 public class Washing {
-    private final Integer startTime = 300;
-    private Integer seconds = startTime;
+    
+    private final Integer electricUsagePerDay = 100;
+    private Integer seconds = electricUsagePerDay;
     private Label label;
+    private Integer powerPerSec;
+    
+
+    public Integer getPowerPerSec() {
+        return powerPerSec;
+    }
+
+    public void setPowerPerSec(Integer powerPerSec) {
+        this.powerPerSec = powerPerSec;
+    }
+    
+    public Integer getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(Integer seconds) {
+        this.seconds = seconds;
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+    
+    public Washing(){
+        powerPerSec = 2;
+    }
     
     public void window() throws Exception
     {
@@ -38,10 +75,9 @@ public class Washing {
 
         doTime();
         windows.setScene(new Scene(layout, 300, 70, Color.BLACK));    
-        windows.setTitle("Count down Timer");
+        windows.setTitle("Utilization of power(Kw)");
         windows.show();
     }
-    
     public void doTime(){
         //Duration duration = Duration.ofSeconds(10000);
         Timeline time = new Timeline();
@@ -53,14 +89,21 @@ public class Washing {
                         //every one second of the timeline the keyframe will do something (i.e., perform a job and that job //is defined by the event handler)
                         @Override
                         public void handle(ActionEvent event){
-                            seconds--;
-                            label.setText("Washing : "+seconds.toString());
+                            seconds -= getPowerPerSec();
+                            label.setText("Washing Machine: "+seconds.toString());
 
                             //setup alert when reaching < 100
-                            if(seconds <= 0){
+                            
+                            if(seconds == 90){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                alert.setHeaderText("It has reached the minimum limit of usage ,Power Saving is On");
+                                alert.show();
+                            }
+                            
+                            if(seconds <= 50){
                                 time.stop();
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setHeaderText("Count down reset to 0!");
+                                alert.setHeaderText("Appliances is off automatically");
                                 alert.show();
                             }
                         }
