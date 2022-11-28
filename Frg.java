@@ -2,8 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.test1;
+package com.mycompany.project;
 
+/**
+ *
+ * @author fakru
+ */
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -16,15 +20,44 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 /**
  *
- * @author fakru
+ * @author Nabil.s
  */
-public class Frg {
-    private final Integer startTime = 400;
-    private Integer seconds = startTime;
+public class Fridge {
+    
+    private final Integer electricUsagePerDay = 400;
+    private Integer seconds = electricUsagePerDay;
     private Label label;
+    private Integer powerPerSec;
+    
+    public Integer getPowerPerSec() {
+        return powerPerSec;
+    }
+
+    public void setPowerPerSec(Integer powerPerSec) {
+        this.powerPerSec = powerPerSec;
+    }
+    
+    public Integer getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(Integer seconds) {
+        this.seconds = seconds;
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+    
+    public Fridge(){
+        powerPerSec = 3;
+    }
     
     public void window() throws Exception
     {
@@ -53,20 +86,27 @@ public class Frg {
                         //every one second of the timeline the keyframe will do something (i.e., perform a job and that job //is defined by the event handler)
                         @Override
                         public void handle(ActionEvent event){
-                            seconds--;
+                            seconds-= getPowerPerSec();
                             label.setText("Fridge : "+seconds.toString());
 
                             //setup alert when reaching < 100
-                            if(seconds <= 390){
+                            if(seconds == 390){
+                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                
+                                alert.setHeaderText("It has reached the minimum limit of usage ,Power Saving is On");
+                                alert.show();
+                            }
+                            
+                            if(seconds <= 350){
                                 time.stop();
                                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setHeaderText("Count down reset to 0!");
+                                alert.setHeaderText("Appliances is off automatically");
                                 alert.show();
                             }
                         }
                     });
         time.getKeyFrames().add(frame);
         time.playFromStart();
-
+      
     }
 }
